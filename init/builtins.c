@@ -479,7 +479,7 @@ int do_mount_all(int nargs, char **args)
     pid = fork();
     if (pid > 0) {
         /* Parent.  Wait for the child to return */
-        waitpid(pid, &status, 0);
+        while (waitpid(pid, &status, 0) == -1 && errno == EINTR);
         if (WIFEXITED(status)) {
             ret = WEXITSTATUS(status);
         } else {
